@@ -4,11 +4,12 @@ metadata:
   name: elastic-search-ms
   namespace: default
 data:
-  ELASTIC_SEARCH_HOST: "indexing-elastis-search-elasticsearch-coordinating-only.default.svc.cluster.local"
+  ELASTIC_SEARCH_HOST: "ies-elasticsearch-master.default.svc.cluster.local"
   ELASTIC_SEARCH_TRANSPORT_PORT: "9300"
   ELASTIC_QUESTION_INDEX: "questions"
   MAX_HIT_RETURNED: "10"
   REDIS_HOST: "my-redis-master.default.svc.cluster.local"
   REDIS_PORT: "6379"
   REDIS_CACHE_TIMEOUT: "120"
+  REDIS_PASSWORD: 5HsvRYmVDn
 

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: elastic-search-ms
-          image: islamahmad/eaproj-elastic-searchms:1.0.0
+          image: islamahmad/eaproj-elastic-searchms:1.0.4
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -58,6 +58,6 @@ spec:
                   key: REDIS_CACHE_TIMEOUT
             - name: REDIS_PASSWORD
               valueFrom:
-                secretKeyRef:
+                configMapKeyRef:
                   name: elastic-search-ms
                   key: REDIS_PASSWORD

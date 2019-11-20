@@ -31,7 +31,7 @@
         <dependency>
             <groupId>ea.sof</groupId>
             <artifactId>shared</artifactId>
-            <version>LATEST</version>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>org.elasticsearch</groupId>
