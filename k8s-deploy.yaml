@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elastic-search-ms
+  labels:
+    app: elastic-search-ms
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elastic-search-ms
+  template:
+    metadata:
+      labels:
+        app: elastic-search-ms
+    spec:
+      containers:
+        - name: elastic-search-ms
+          image: islamahmad/eaproj-elastic-searchms:1.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: ELASTIC_SEARCH_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: elastic-search-ms
+                  key: ELASTIC_SEARCH_HOST
+            - name: ELASTIC_SEARCH_TRANSPORT_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: elastic-search-ms
+                  key: ELASTIC_SEARCH_TRANSPORT_PORT
+            - name: ELASTIC_QUESTION_INDEX
+              valueFrom:
+                configMapKeyRef:
+                  name: elastic-search-ms
+                  key: ELASTIC_QUESTION_INDEX
+            - name: MAX_HIT_RETURNED
+              valueFrom:
+                configMapKeyRef:
+                  name: elastic-search-ms
+                  key: MAX_HIT_RETURNED
+            - name: REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: elastic-search-ms
+                  key: REDIS_HOST
+            - name: REDIS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: elastic-search-ms
+                  key: REDIS_PORT
+            - name: REDIS_CACHE_TIMEOUT
+              valueFrom:
+                configMapKeyRef:
+                  name: elastic-search-ms
+                  key: REDIS_CACHE_TIMEOUT
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: elastic-search-ms
+                  key: REDIS_PASSWORD
