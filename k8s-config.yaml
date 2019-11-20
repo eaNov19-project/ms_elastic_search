@@ -11,5 +11,5 @@ data:
   REDIS_HOST: "my-redis-master.default.svc.cluster.local"
   REDIS_PORT: "6379"
   REDIS_CACHE_TIMEOUT: "120"
-  REDIS_PASSWORD: 5HsvRYmVDn
+  REDIS_PASSWORD: redisdb
 

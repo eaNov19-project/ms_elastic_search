@@ -23,6 +23,7 @@ import java.util.Map;
 
 
 @RestController
+@CrossOrigin
 @RequestMapping("/elastic-search")
 public class ElasticSearchController {
 
