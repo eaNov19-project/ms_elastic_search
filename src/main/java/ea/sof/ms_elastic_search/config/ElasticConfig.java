@@ -25,10 +25,10 @@ public class ElasticConfig {
         TransportClient client = null;
         try{
             Settings settings = Settings.builder()
-//                    .put("cluster.name", "ea-proj-cluster")
+                    .put("cluster.name", "elastic")
 //                    .put("client.transport.sniff", false)
                     .build();
-            client = new PreBuiltTransportClient(Settings.EMPTY);
+            client = new PreBuiltTransportClient(settings);
             client.addTransportAddress(new TransportAddress(InetAddress.getByName(host), port));
 
             return client;
