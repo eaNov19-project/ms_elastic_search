@@ -16,13 +16,13 @@ spec:
     spec:
       containers:
         - name: elastic-search-ms
-          image: islamahmad/eaproj-elastic-searchms:1.0.7
+          image: islamahmad/eaproj-elastic-searchms:1.0.9
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:
             - name: APP_VERSION
-              value: "islamahmad/eaproj-elastic-searchms:1.0.7"
+              value: "islamahmad/eaproj-elastic-searchms:1.0.9"
 
             - name: SERVER_PORT
               value: "8080"

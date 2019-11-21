@@ -1,6 +1,5 @@
 package ea.sof.ms_elastic_search.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import ea.sof.ms_elastic_search.model.ScoredQuestionQueueModel;
 import ea.sof.ms_elastic_search.repository.RedisQuestionRepositoryImpl;
 import ea.sof.ms_elastic_search.service.ElasticSearchService;
@@ -14,9 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -63,28 +59,17 @@ public class ElasticSearchController {
 
 		List<QuestionQueueModel> questions = null;
         List<ScoredQuestionQueueModel> scoredQuestions = null;
-        List<QuestionQueueModel> questions = null;
 
-		//check if data exists in redis
-		Map<String, QuestionQueueModel> redisQuestions = redisQuestionService.findAll(phrase);
-		if (redisQuestions != null && redisQuestions.size() > 0) {
-			questions = new ArrayList<QuestionQueueModel>(redisQuestions.values());
-			LOGGER.info("Found " + questions.size() + " records from Redis");
-			return questions;
-		}
         //check if data exists in redis
         Map<String, ScoredQuestionQueueModel> redisQuestions = redisQuestionService.findAll(phrase);
         if(redisQuestions != null && redisQuestions.size() > 0) {
             //get from redis
             scoredQuestions = new ArrayList<ScoredQuestionQueueModel>(redisQuestions.values());
             questions = elasticSearchService.convertToOrderedList(scoredQuestions);
-            return questions;
+			LOGGER.info("Found " + questions.size() + " records from Redis");
+			return questions;
         }
 
-		//else, get from ElasticSearch engine and update Redis
-		questions = elasticSearchService.search(phrase);
-		LOGGER.info("Found " + questions.size() + " records from elastic search engine");
-		redisQuestionService.saveAll(phrase, questions, timeout);
         //else, get from ElasticSearch engine and update Redis
         scoredQuestions = elasticSearchService.search(phrase);
         if(scoredQuestions != null && scoredQuestions.size() > 0){
@@ -92,9 +77,7 @@ public class ElasticSearchController {
             questions = elasticSearchService.convertToOrderedList(scoredQuestions);
         }
 
+		LOGGER.info("Found " + questions.size() + " records from elastic search engine");
 		return questions;
 	}
-        return questions;
-
-    }
 }

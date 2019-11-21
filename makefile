@@ -1,4 +1,4 @@
-img=islamahmad/eaproj-elastic-searchms:1.0.7
+img=islamahmad/eaproj-elastic-searchms:1.0.9
 
 # ===== Maven =====
 maven-rebuild:
