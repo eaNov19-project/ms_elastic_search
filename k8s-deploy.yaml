@@ -16,48 +16,27 @@ spec:
     spec:
       containers:
         - name: elastic-search-ms
-          image: islamahmad/eaproj-elastic-searchms:1.0.6
+          image: islamahmad/eaproj-elastic-searchms:1.0.7
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:
-            - name: ELASTIC_SEARCH_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: elastic-search-ms
-                  key: ELASTIC_SEARCH_HOST
-            - name: ELASTIC_SEARCH_TRANSPORT_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: elastic-search-ms
-                  key: ELASTIC_SEARCH_TRANSPORT_PORT
-            - name: ELASTIC_QUESTION_INDEX
-              valueFrom:
-                configMapKeyRef:
-                  name: elastic-search-ms
-                  key: ELASTIC_QUESTION_INDEX
-            - name: MAX_HIT_RETURNED
-              valueFrom:
-                configMapKeyRef:
-                  name: elastic-search-ms
-                  key: MAX_HIT_RETURNED
-            - name: REDIS_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: elastic-search-ms
-                  key: REDIS_HOST
-            - name: REDIS_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: elastic-search-ms
-                  key: REDIS_PORT
-            - name: REDIS_CACHE_TIMEOUT
-              valueFrom:
-                configMapKeyRef:
-                  name: elastic-search-ms
-                  key: REDIS_CACHE_TIMEOUT
+            - name: APP_VERSION
+              value: "islamahmad/eaproj-elastic-searchms:1.0.7"
+
+            - name: SERVER_PORT
+              value: "8080"
+
             - name: REDIS_PASSWORD
               valueFrom:
-                configMapKeyRef:
+                secretKeyRef:
                   name: elastic-search-ms
                   key: REDIS_PASSWORD
+
+          envFrom:
+            - configMapRef:
+                name: elastic-search-ms
+            - configMapRef:
+                name: services-global
+            - configMapRef:
+                name: kafka-global
