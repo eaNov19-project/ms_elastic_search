@@ -1,5 +1,6 @@
 package ea.sof.ms_elastic_search.config;
 
+import ea.sof.ms_elastic_search.model.ScoredQuestionQueueModel;
 import ea.sof.shared.queue_models.QuestionQueueModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -42,8 +43,8 @@ public class RedisConfig {
     }
 
     @Bean
-    RedisTemplate<String, QuestionQueueModel> redisTemplate() {
-        RedisTemplate<String, QuestionQueueModel> redisTemplate = new RedisTemplate<>();
+    RedisTemplate<String, ScoredQuestionQueueModel> redisTemplate() {
+        RedisTemplate<String, ScoredQuestionQueueModel> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(jedisConnectionFactory());
         return redisTemplate;
     }

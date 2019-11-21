@@ -1,6 +1,7 @@
 package ea.sof.ms_elastic_search.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ea.sof.ms_elastic_search.model.ScoredQuestionQueueModel;
 import ea.sof.ms_elastic_search.service.ElasticSearchService;
 import ea.sof.ms_elastic_search.service.RedisQuestionService;
 import ea.sof.shared.queue_models.QuestionQueueModel;
@@ -16,10 +17,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -42,20 +41,26 @@ public class ElasticSearchController {
     @GetMapping("/search/{phrase}")
     public List<QuestionQueueModel> searchByName(@PathVariable(name="phrase") final String phrase) {
 
+        List<ScoredQuestionQueueModel> scoredQuestions = null;
         List<QuestionQueueModel> questions = null;
 
         //check if data exists in redis
-        Map<String, QuestionQueueModel> redisQuestions = redisQuestionService.findAll(phrase);
+        Map<String, ScoredQuestionQueueModel> redisQuestions = redisQuestionService.findAll(phrase);
         if(redisQuestions != null && redisQuestions.size() > 0) {
             //get from redis
-            questions = new ArrayList<QuestionQueueModel>(redisQuestions.values());
-            return  questions;
+            scoredQuestions = new ArrayList<ScoredQuestionQueueModel>(redisQuestions.values());
+            questions = elasticSearchService.convertToOrderedList(scoredQuestions);
+            return questions;
         }
 
         //else, get from ElasticSearch engine and update Redis
-        questions = elasticSearchService.search(phrase);
-        redisQuestionService.saveAll(phrase, questions, timeout);
+        scoredQuestions = elasticSearchService.search(phrase);
+        if(scoredQuestions != null && scoredQuestions.size() > 0){
+            redisQuestionService.saveAll(phrase, scoredQuestions, timeout);
+            questions = elasticSearchService.convertToOrderedList(scoredQuestions);
+        }
 
         return questions;
+
     }
 }
